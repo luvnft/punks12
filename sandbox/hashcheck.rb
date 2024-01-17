@@ -28,7 +28,20 @@ pp items[0,2]
 ## ==> 3009/9999 #3009..
 ## 8240
 
-(0..9999).each do |i|
+## cont. / restart at.
+## ==> 8651/9999 #8651.
+
+
+
+ids = (0..999)   ## hash check first thousand
+ids = (1000..1999)   ## hash check first thousand
+ids = (2000..2999)   ## hash check first thousand
+ids = (9000..9999)   ## hash check first thousand
+
+ids = (9900..9999)  ## hash check last 100
+
+# ids = [9935, 9936]
+ids.each do |i|
     num = '%04d' % i
     path = "./hashcheck/#{num}.json"
 
@@ -39,6 +52,12 @@ pp items[0,2]
         ## note: start counting at 0/0
       puts "==> #{i}/#{items.size-1} #{item['name']}..."
       hash = item['id']
+
+      ## use reference image hash
+      blob = read_blob( "./inscribe/punk#{num}.png" )
+      hash = Digest::SHA256.hexdigest( blob )
+
+
       data = Ordinalsbot.hashcheck( hash )
 
       puts "  #{data['status']} #{data['count']}"
